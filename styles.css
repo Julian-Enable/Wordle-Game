@@ -48,13 +48,15 @@ h1 {
     background-color: #fff;
     color: #6AAA64;
     cursor: pointer;
-}
-.green{
-    background-color: #6AAA64;
-}
-.gold{
-    background-color: gold;
+    
 }
 .gray{
     background-color: gray;
 }
+.gold{
+    background-color: gold;
+}
+.green{
+    background-color: #6AAA64;
+}
+
