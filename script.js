@@ -1,13 +1,33 @@
 // Definición del array de letras de la palabra en mayúsculas
-let word = "texto";
+let word = "";  // Dejamos la palabra en blanco inicialmente
 let resultElement = document.querySelector(".result");
-let wordArray = word.toUpperCase().split("");
 let mainContainer = document.querySelector(".main-container");
 let rowId = 1;
 console.log(wordArray);
 
 // Seleccionar el contenedor donde se agregarán los inputs
 let actualRow = document.querySelector(".row");
+
+// Llamada a la función para obtener la palabra aleatoria
+getRandomWord();
+
+function getRandomWord() {
+  const randomWordAPIUrl = "https://random-word-api.herokuapp.com/word?lang=es";
+
+  fetch(randomWordAPIUrl)
+    .then(response => response.json())
+    .then(data => {
+      word = data[0];
+      console.log("Palabra aleatoria:", word);
+      
+      drawSquares(actualRow);
+      listenInput(actualRow);
+      addFocus(actualRow);
+    })
+    .catch(error => {
+      console.error("Error al obtener la palabra aleatoria:", error);
+    });
+}
 
 drawSquares(actualRow);
 listenInput(actualRow);
@@ -26,48 +46,60 @@ function listenInput(actualRow) {
   // Agregar un evento de escucha para cada input
   squares.forEach((element, index) => {
     element.addEventListener("input", (event) => {
-      if (event.inputType !== 'deleteContentBackward') {
+      //Si no he borrado 
+      if (event.inputType !== "deleteContentBackward") {
         // Almacenar la letra ingresada por el usuario en mayúsculas
-      userInput.push(event.target.value.toUpperCase());
-      console.log(userInput);
+        userInput.push(event.target.value.toUpperCase());
+        console.log(userInput);
 
-      // Cambiar el enfoque al siguiente input si existe
-      if (event.target.nextElementSibling) {
-        event.target.nextElementSibling.focus();
-      } else {
-        // Comparar las letras ingresadas con las letras de la palabra original
-        let rightIndex = compareArrays(wordArray, userInput);
-        console.log(rightIndex);
+        // Cambiar el enfoque al siguiente input si existe
+        if (event.target.nextElementSibling) {
+          event.target.nextElementSibling.focus();
+        } else {
+          //crear arreglo con las letras llenas
 
-        // Resaltar los inputs correctos en verde
-        rightIndex.forEach((element) => {
-          squares[element].classList.add("green");
-        });
+          let squareFilled = actualRow.querySelectorAll('.square');
+          squareFilled = [...squareFilled]
+          let finalUserInput = [];
+          squareFilled.forEach(element => {
+            finalUserInput.push(element.value.toUpperCase()) 
+          })
 
-        // si los arreglos son iguales
-        if (rightIndex.length === wordArray.length) {
-          showResult("Ganaste");
+          // Comparar las letras ingresadas con las letras de la palabra original
+          let rightIndex = compareArrays(wordArray, finalUserInput);
+          console.log(rightIndex);
 
-          
-          return;
+          // Resaltar los inputs correctos en verde
+          rightIndex.forEach((element) => {
+            squares[element].classList.add("green");
+          });
+
+          // si los arreglos son iguales
+          if (rightIndex.length === wordArray.length) {
+            showResult("Ganaste");
+
+            return;
+          }
+          //cambiar estilos si existe la letra pero no esta en la posicion correcta
+          let existIndexArray = existLetter(wordArray, finalUserInput)
+          console.log(existIndexArray)
+          existIndexArray.forEach((element) => {
+            squares[element].classList.add("gold");
+          });
+
+          //crear una nueva fila
+          let newRow = createRow();
+          if (!newRow) {
+            return;
+          }
+          drawSquares(newRow);
+          listenInput(newRow);
+          addFocus(newRow);
         }
-        //cambiar estilos si existe la letra pero no esta en la posicion correcta
-        let existIndexArray = existLetter(wordArray, userInput);
-        existIndexArray.forEach((element) => {
-          squares[element].classList.add("gold");
-        });
-
-        //crear una nueva fila
-        let newRow = createRow()
-        if (!newRow) {
-          return
-        }
-        drawSquares(newRow)
-        listenInput(newRow)
-        addFocus(newRow)
+      }else{
+        userInput.pop();
+        console.log(userInput);
       }
-      }
-      
     });
   });
 }
@@ -107,7 +139,9 @@ function createRow() {
     mainContainer.appendChild(newRow); // Corrección aquí
     return newRow;
   } else {
-    showResult(`Intenta de nuevo, la respuesta correcta era: "${word.toUpperCase()}"`);
+    showResult(
+      `Intenta de nuevo, la respuesta correcta era: "${word.toUpperCase()}"`
+    );
   }
 }
 
@@ -130,11 +164,11 @@ function addFocus(actualRow) {
 
 function showResult(textMsg) {
   resultElement.innerHTML = `<p>${textMsg}</p>
-  <button class="button">Reiniciar</button>`
+  <button class="button">Reiniciar</button>`;
 
   let resetBtn = document.querySelector(".button");
-          resetBtn.addEventListener("click", () => {
-            location.reload();
-          });
-
+  resetBtn.addEventListener("click", () => {
+    location.reload();
+  });
 }
+
