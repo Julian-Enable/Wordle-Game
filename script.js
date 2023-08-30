@@ -1,33 +1,14 @@
 // Definición del array de letras de la palabra en mayúsculas
-let word = "";  // Dejamos la palabra en blanco inicialmente
+
+let word = "ELEFANTE";
 let resultElement = document.querySelector(".result");
+let wordArray = word.toUpperCase().split("");
 let mainContainer = document.querySelector(".main-container");
 let rowId = 1;
 console.log(wordArray);
 
 // Seleccionar el contenedor donde se agregarán los inputs
 let actualRow = document.querySelector(".row");
-
-// Llamada a la función para obtener la palabra aleatoria
-getRandomWord();
-
-function getRandomWord() {
-  const randomWordAPIUrl = "https://random-word-api.herokuapp.com/word?lang=es";
-
-  fetch(randomWordAPIUrl)
-    .then(response => response.json())
-    .then(data => {
-      word = data[0];
-      console.log("Palabra aleatoria:", word);
-      
-      drawSquares(actualRow);
-      listenInput(actualRow);
-      addFocus(actualRow);
-    })
-    .catch(error => {
-      console.error("Error al obtener la palabra aleatoria:", error);
-    });
-}
 
 drawSquares(actualRow);
 listenInput(actualRow);
@@ -171,4 +152,3 @@ function showResult(textMsg) {
     location.reload();
   });
 }
-
