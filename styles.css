@@ -50,13 +50,40 @@ h1 {
     cursor: pointer;
     
 }
-.gray{
-    background-color: gray;
-}
-.gold{
+.gray {
+    background-color: #ccc;
+  }
+  
+  .gold {
     background-color: gold;
-}
-.green{
+  }
+  
+  .green {
     background-color: #6AAA64;
-}
+  }
 
+  /* Estilizar los resultados */
+.result {
+    text-align: center;
+    font-size: 24px;
+    margin-top: 20px;
+  }
+  
+  .button {
+    width: 170px;
+    height: 60px;
+    border-radius: 16px;
+    border: none;
+    background-color: #6AAA64;
+    font-size: 24px;
+    color: #fff;
+    margin-top: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s, border 0.3s, color 0.3s;
+  }
+  
+  .button:hover {
+    background-color: #fff;
+    border: 3px solid #6AAA64;
+    color: #6AAA64;
+  }
