@@ -26,7 +26,8 @@ function listenInput(actualRow) {
   // Agregar un evento de escucha para cada input
   squares.forEach((element, index) => {
     element.addEventListener("input", (event) => {
-      // Almacenar la letra ingresada por el usuario en mayúsculas
+      if (event.inputType !== 'deleteContentBackward') {
+        // Almacenar la letra ingresada por el usuario en mayúsculas
       userInput.push(event.target.value.toUpperCase());
       console.log(userInput);
 
@@ -44,13 +45,10 @@ function listenInput(actualRow) {
         });
 
         // si los arreglos son iguales
-        if (rightIndex.length == wordArray.length) {
+        if (rightIndex.length === wordArray.length) {
           showResult("Ganaste");
 
-          let resetBtn = document.querySelector(".button");
-          resetBtn.addEventListener("click", () => {
-            location.reload();
-          });
+          
           return;
         }
         //cambiar estilos si existe la letra pero no esta en la posicion correcta
@@ -60,11 +58,16 @@ function listenInput(actualRow) {
         });
 
         //crear una nueva fila
-        let actualRow = createRow();
-        drawSquares(actualRow);
-        listenInput(actualRow);
-        addFocus(actualRow);
+        let newRow = createRow()
+        if (!newRow) {
+          return
+        }
+        drawSquares(newRow)
+        listenInput(newRow)
+        addFocus(newRow)
       }
+      }
+      
     });
   });
 }
@@ -94,16 +97,17 @@ function existLetter(array1, array2) {
   });
   return existIndexArray;
 }
+
 function createRow() {
   rowId++;
   if (rowId <= 5) {
     let newRow = document.createElement("div");
     newRow.classList.add("row");
     newRow.setAttribute("id", rowId);
-    ainContainer.appendChild(newRow);
+    mainContainer.appendChild(newRow); // Corrección aquí
     return newRow;
   } else {
-    showResult("Perdiste");
+    showResult(`Intenta de nuevo, la respuesta correcta era: "${word.toUpperCase()}"`);
   }
 }
 
@@ -120,11 +124,17 @@ function drawSquares(actualRow) {
 
 function addFocus(actualRow) {
   let focusElement = actualRow.querySelector(".focus");
-  console.log("focusElement");
+  console.log(focusElement); // Corrección aquí
   focusElement.focus();
 }
 
 function showResult(textMsg) {
   resultElement.innerHTML = `<p>${textMsg}</p>
-  <button class="button">Reiniciar</button>`;
+  <button class="button">Reiniciar</button>`
+
+  let resetBtn = document.querySelector(".button");
+          resetBtn.addEventListener("click", () => {
+            location.reload();
+          });
+
 }
