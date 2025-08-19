@@ -1,25 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/styles.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="styles.css" />
     <title>Wordle DonDev</title>
   </head>
   <body>
-    <h1>WORDLE | DonDev</h1>
-    <main class="main-container">
-    <!-- <h2 class="loading">Cargando...</h2>  -->
-      <div class = "row" id="1"> 
-        <!-- <input type="text" maxlength="1" class="square"> -->
+    <div class="main-container">
+      <h1>WORDLE</h1>
+      <p class="subtitle">Adivina la palabra en español</p>
+      
+      <div class="game-info">
+        <div class="stats">
+          <span class="stat-item">
+            <span class="stat-label">Intentos:</span>
+            <span class="stat-value" id="attempts">0</span>
+          </span>
+          <span class="stat-item">
+            <span class="stat-label">Longitud:</span>
+            <span class="stat-value" id="wordLength">-</span>
+          </span>
+        </div>
       </div>
-    </main>
-    <div class = "result">
-        <!-- <p>Ganaste!</p>
-        <button class="button">Reiniciar</button> -->
+
+      <div class="game-board">
+        <div class="row" id="1"></div>
+      </div>
+
+      <div class="result"></div>
     </div>
-    <script src="./script.js"></script>
+
+    <script src="script.js"></script>
   </body>
 </html>
